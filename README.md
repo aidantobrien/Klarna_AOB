@@ -5,7 +5,7 @@ Run the Klarna API locally in a few easy steps.
 
 ## Prerequisites
 
-- Python 3.10+ installed
+- Python 3.0+ installed
 - `pip` package manager
 
 1. Clone the repository:
