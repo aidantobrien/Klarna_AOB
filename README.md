@@ -4,5 +4,5 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/aidantobrien/Klarna
-cd https://github.com/aidantobrien/Klarna
+git clone https://github.com/aidantobrien/Klarna.git
+cd aidantobrien/Klarna
