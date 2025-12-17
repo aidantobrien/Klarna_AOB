@@ -27,6 +27,7 @@ app = FastAPI(
 # Input schema
 # -----------------------------
 class LoanApplication(BaseModel):
+    loan_id: str
     loan_amount: float
     existing_klarna_debt: float
     days_since_first_loan: int
@@ -48,13 +49,7 @@ class LoanApplication(BaseModel):
 
     merchant_group: str
     merchant_category: str
-
-    repayment_to_loan_ratio: float
-    failed_ratio_3m_1y: float
-    confirmed_ratio_3m_6m: float
-    loan_to_existing_debt: float
-    loan_vs_avg: float
-      
+    
 # -----------------------------
 # Prediction endpoint
 # -----------------------------
@@ -63,7 +58,9 @@ class LoanApplication(BaseModel):
 def predict_default(application: LoanApplication):
 
     df = pd.DataFrame([application.dict()])
-    
+
+    loan_id = df.pop("loan_id")[0]
+
     # Engineer features
     df = engineer_features(df)
     
@@ -73,7 +70,7 @@ def predict_default(application: LoanApplication):
     # Predict probabilities
     pd_default = model.predict_proba(df)[:, 1][0]
 
-    return {"probability_of_default": float(pd_default)}
+    return {"loan_id": loan_id, "probability_of_default": float(pd_default)}
 
 
 # --- Batch prediction endpoint ---
@@ -82,21 +79,29 @@ def predict_default_batch(applications: List[LoanApplication]):
     # Convert list of Pydantic objects to DataFrame
     df = pd.DataFrame([app.dict() for app in applications])
     
+    loan_ids = df.pop("loan_id")
+
     # Engineer features
     df = engineer_features(df)
-    
+
     # Select model columns
     df = df[FEATURE_COLUMNS]
-    
+
     # Predict probabilities
     probabilities = model.predict_proba(df)[:, 1].tolist()
-    
-    return {"probabilities_of_default": probabilities}
+
+    # Combine loan_ids and predictions
+    results = [{"loan_id": lid, "probability_of_default": prob} for lid, prob in zip(loan_ids, probabilities)]
+
+    return {"predictions": results}
 
 @app.post("/predict_csv")
 async def predict_csv(file: UploadFile = File(...)):
     # Read CSV into DataFrame
     df = pd.read_csv(file.file)
+    
+    # Extract loan_id
+    loan_ids = df.pop("loan_id")
     
     # Engineer features
     df = engineer_features(df)
@@ -107,5 +112,8 @@ async def predict_csv(file: UploadFile = File(...)):
     # Predict probabilities
     probabilities = model.predict_proba(df_model)[:, 1].tolist()
     
-    # Return probabilities
-    return {"probabilities_of_default": probabilities}
+    # Combine loan_ids with predictions
+    results = [{"loan_id": lid, "probability_of_default": prob} for lid, prob in zip(loan_ids, probabilities)]
+    
+    return {"predictions": results}
+
