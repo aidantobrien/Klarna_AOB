@@ -11,7 +11,7 @@ Run the Klarna API locally in a few easy steps.
 1. Clone the repository:
 ```bash
 git clone https://github.com/aidantobrien/Klarna_AOB.git
-cd Klarna
+cd Klarna_AOB
 ```
 
 2. Install dependencies
