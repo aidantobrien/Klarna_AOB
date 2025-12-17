@@ -16,11 +16,11 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
 
     # Repayment ratio
     df['repayment_to_loan_ratio'] = np.where(
-        df[['amount_repaid_1y','loan_amount']].isna().any(axis=1) | (df['loan_amount'] == 0),
+        df[['amount_repaid_1y','loan_amount']].isna().any(axis=1),
         np.nan,
-        (df['amount_repaid_1y'] + 1) / (df['loan_amount'] + 1)
+        df['amount_repaid_1y'] / df['loan_amount']
     )
-    
+
     # Confirmed payment acceleration
     df['confirmed_ratio_3m_6m'] = np.where(
         df[['num_confirmed_payments_3m','num_confirmed_payments_6m']].isna().any(axis=1),
