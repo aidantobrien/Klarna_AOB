@@ -38,8 +38,8 @@ curl -X POST "http://127.0.0.1:8000/predict" \
 -d '{
   "loan_amount": 0,
   "existing_klarna_debt": 0,
-  "num_active_loans": 0,
   "days_since_first_loan": 0,
+  "num_active_loans": 0,
   "new_exposure_7d": 0,
   "new_exposure_14d": 0,
   "num_failed_payments_3m": 0,
@@ -67,8 +67,8 @@ curl -X POST "http://127.0.0.1:8000/predict_batch" \
   {
     "loan_amount": 0,
     "existing_klarna_debt": 0,
-    "num_active_loans": 0,
     "days_since_first_loan": 0,
+    "num_active_loans": 0,
     "new_exposure_7d": 0,
     "new_exposure_14d": 0,
     "num_failed_payments_3m": 0,
@@ -90,8 +90,8 @@ curl -X POST "http://127.0.0.1:8000/predict_batch" \
   {
     "loan_amount": 100,
     "existing_klarna_debt": 50,
-    "num_active_loans": 5,
     "days_since_first_loan": 200,
+    "num_active_loans": 5,
     "new_exposure_7d": 0,
     "new_exposure_14d": 5,
     "num_failed_payments_3m": 0,
