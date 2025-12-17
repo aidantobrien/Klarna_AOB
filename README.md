@@ -51,12 +51,7 @@ curl -X POST "http://127.0.0.1:8000/predict" \
   "amount_repaid_6m": 0,
   "amount_repaid_1y": 0,
   "merchant_group": "string",
-  "merchant_category": "string",
-  "repayment_to_loan_ratio": 0,
-  "failed_ratio_3m_1y": 0,
-  "confirmed_ratio_3m_6m": 0,
-  "loan_to_existing_debt": 0,
-  "loan_vs_avg": 0
+  "merchant_category": "string"
 }'
 ```
 Batch JSON in list format 
@@ -80,12 +75,7 @@ curl -X POST "http://127.0.0.1:8000/predict_batch" \
     "amount_repaid_6m": 0,
     "amount_repaid_1y": 0,
     "merchant_group": "string",
-    "merchant_category": "string",
-    "repayment_to_loan_ratio": 0,
-    "failed_ratio_3m_1y": 0,
-    "confirmed_ratio_3m_6m": 0,
-    "loan_to_existing_debt": 0,
-    "loan_vs_avg": 0
+    "merchant_category": "string"
   },
   {
     "loan_amount": 100,
@@ -103,12 +93,7 @@ curl -X POST "http://127.0.0.1:8000/predict_batch" \
     "amount_repaid_6m": 100,
     "amount_repaid_1y": 150,
     "merchant_group": "groupA",
-    "merchant_category": "categoryA",
-    "repayment_to_loan_ratio": 0.5,
-    "failed_ratio_3m_1y": 0.2,
-    "confirmed_ratio_3m_6m": 0.8,
-    "loan_to_existing_debt": 2,
-    "loan_vs_avg": 1.2
+    "merchant_category": "categoryA"
   }
 ]'
 ```
