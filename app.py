@@ -29,7 +29,6 @@ app = FastAPI(
 class LoanApplication(BaseModel):
     loan_amount: float
     existing_klarna_debt: float
-    num_active_loans: int 
     days_since_first_loan: int
 
     new_exposure_7d: float
@@ -63,10 +62,14 @@ class LoanApplication(BaseModel):
 def predict_default(application: LoanApplication):
 
     df = pd.DataFrame([application.dict()])
+    
+    # Engineer features
     df = engineer_features(df)
-
+    
+    # Select model columns
     df = df[FEATURE_COLUMNS]
-
+    
+    # Predict probabilities
     pd_default = model.predict_proba(df)[:, 1][0]
 
     return {"probability_of_default": float(pd_default)}
@@ -91,17 +94,17 @@ def predict_default_batch(applications: List[LoanApplication]):
 
 @app.post("/predict_csv")
 async def predict_csv(file: UploadFile = File(...)):
-    # 1️⃣ Read CSV into DataFrame
+    # Read CSV into DataFrame
     df = pd.read_csv(file.file)
     
-    # 2️⃣ Engineer features
+    # Engineer features
     df = engineer_features(df)
     
-    # 3️⃣ Keep only model columns
+    # Keep only model columns
     df_model = df[FEATURE_COLUMNS]
     
-    # 4️⃣ Predict probabilities
+    # Predict probabilities
     probabilities = model.predict_proba(df_model)[:, 1].tolist()
     
-    # 5️⃣ Return probabilities (optionally include IDs if in CSV)
+    # Return probabilities
     return {"probabilities_of_default": probabilities}
