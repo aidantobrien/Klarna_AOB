@@ -7,7 +7,6 @@ scikit-learn
 xgboost
 joblib
 python-multipart
-shap
 optuna
 matplotlib
 seaborn
